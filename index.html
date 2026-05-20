@@ -1,206 +1,151 @@
-<!--
-GCSE Digital Question Bank — NUMBER, ALGEBRA, GEOMETRY & MEASURE, STATISTICS & PROBABILITY
-WJEC Foundation Tier
-Version 1.4.0
-Standalone distribution build
-v1.1.0: Critical crashes fixed (makeAdvancedReversePercent, makeTrueFalsePercent_F,
-  makeTrueFalseConversion_F); serious answer bugs fixed (makeEquationCreatingQuestion,
-  makeInequalityInterpretationQuestion, makeConditions factories); moderate bugs fixed
-  (makeThoughtNumberDivide_F, makeReversePercentMoney, makeAlgebraicFractionSimplify,
-  makeExpandDoubleBracketQuestion); duplicates removed; bag distribution; renderMath.
-v1.3.0: Geometry diagrams added to all 6 TOPIC_MAP Geometry factories.
-  Engine primitives copied verbatim from GCSE Angles Engine v6 FINAL LOCKED MASTER.
-v1.2.0: makeTrueFalsePercent_F — "50% of 30 is 15% of 100" was True, not False; moved
-  to trueStatements, replaced with genuinely false statement.
-  makeExpandSingleBracketQuestion — 1n/-1n formatting fixed using formatCoeff/formatTerm.
-v1.3.1: Foundation difficulty labels standardised; no student-facing Intermediate labels remain.
-v1.4.0: Logo embedded offline; Foundation final sweep fixes topic tagging and angle diagrams.
-v1.6.0: Teacher feedback batch 2 applied:
-  Factory 1 (REV%M): full allowed % list (1,2,3,4,5,10,12,12½,15,20,25,30,33⅓,35,40,60,75,80); correct solution text.
-  Factory 2 (PCHG): full % list in all 3 modes.
-  Factory 12 (MIX): full % list; exclude recurring decimals by integer-check.
-  Factory 13 (COMP%): full % list; exact fractional arithmetic.
-  Factory 14 (REV%A): full % list; both increase and reduction scenarios.
-  Factory 15 (RSH): 14 question types — 2-part ratio, 3-part ratio smallest/largest,
-    given smallest find largest (and vice versa), n-times questions, direct proportion (petrol/milk/honey/OJ).
-  Factory 20 (BND): added nearest-10cm (±5) and 1-d.p. (±0.05) area variants; 2 d.p. shown with 1 d.p. note.
-  Factory 29 (ALG): Bug 1 fixed — x−b=c solution text now correct (was arithmetically false);
-    Bug 2 fixed — dead code removed, all 6 forms now reachable; added x+b=c and x/a=b forms.
-  Factory 32 (ALG): new forms a+bx=cx+d, a+bx=cx, bx=dx+a; sides randomised for variety.
-  Factory 36 (ALG): no ^ symbol; added types 9 (nx^a my^b / px^c) and 10 ((a/nx^m)(bx^c/pa) with c>m).
-  Factory 37 (ALG): fully rewritten — all solutions now correct; stacked display via renderMath.
-  Factory 38 (ALG): Ax/B=C/D with B≠D; suppress ±1 coefficients; two-step worked solution.
-  Factory 42 (ALG): squares sequence has starting variety and next-term variant.
-  Factories 69/70/71 (GEO): diagrams in all 4 orientations; θ randomly placed; expanded triple pool.
-  Factory 77 (STAT): rendered HTML frequency table (Value | Frequency | f×x) shown as diagram.
-  Factory 86 (STAT): boys sport (angles from counts), girls sport (counts from angles), heating survey.
--->
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mr Nathan's GCSE Maths Question Bank – Foundation Tier | AQA, Edexcel, WJEC & IGCSE</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <title>Mr Nathan's GCSE Maths Question Bank — Foundation Tier</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f7fb;
+    *{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --primary:#2a7a10;
+      --dark:#1a4d0a;
+      --pill-bg:#e8f5e0;
+      --pill-text:#1a4d0a;
     }
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: #ffffff;
-      padding: 24px 28px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 1.6rem;
-      color: #134b9b;
-    }
-    .brand-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 8px;
-    }
-    .brand-logo {
-      width: 82px;
-      height: 82px;
-      object-fit: contain;
-      flex: 0 0 auto;
-      background: transparent;
-    }
-    .brand-title h1 { margin-bottom: 4px; }
-    .brand-title .subtitle { margin-bottom: 0; }
-    @media (max-width: 600px){
-      .brand-header { gap: 12px; }
-      .brand-logo { width: 68px; height: 68px; }
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fb;min-height:100vh;color:#1a1a2e;}
+
+    /* ── Header ── */
+    .header{background:var(--dark);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;}
+    .header-logo{font-size:1.8rem;flex-shrink:0;}
+    .header-text h1{font-size:1rem;font-weight:700;line-height:1.3;}
+    .header-text .sub{font-size:0.72rem;color:rgba(255,255,255,0.65);margin-top:2px;}
+    .tier-badge{display:inline-block;margin-top:5px;padding:2px 12px;background:var(--primary);color:#fff;border-radius:999px;font-size:0.72rem;font-weight:700;letter-spacing:.05em;}
+
+    /* ── Container ── */
+    .container{max-width:860px;margin:28px auto;padding:0 16px;}
+
+    /* ── Controls ── */
+    .controls{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:16px 20px;margin-bottom:20px;}
+    .controls-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;}
+    .controls-row:last-child{margin-bottom:0;}
+    .controls-row label{font-size:0.85rem;font-weight:600;color:var(--dark);white-space:nowrap;}
+    select{padding:7px 10px;border:1px solid #c5cbe0;border-radius:5px;font-size:0.88rem;background:#fff;cursor:pointer;color:#1a1a2e;}
+    select:focus{outline:2px solid var(--primary);outline-offset:1px;}
+    .btn{padding:8px 16px;border:none;border-radius:5px;font-size:0.87rem;font-weight:600;cursor:pointer;transition:background .15s,opacity .15s;}
+    .btn-primary{background:var(--primary);color:#fff;}
+    .btn-primary:hover{opacity:.88;}
+    .btn-secondary{background:var(--pill-bg);color:var(--pill-text);}
+    .btn-secondary:hover{opacity:.85;}
+    .btn-green{background:#22863a;color:#fff;}
+    .btn-green:hover{opacity:.88;}
+    .btn-outline{background:#fff;color:var(--dark);border:1.5px solid var(--primary);}
+    .btn-outline:hover{background:var(--pill-bg);}
+    .btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+    /* ── Score tracker ── */
+    .score-bar{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:14px 20px;margin-bottom:20px;display:none;align-items:center;gap:18px;flex-wrap:wrap;}
+    .score-stat{text-align:center;}
+    .score-stat .val{font-size:1.5rem;font-weight:800;color:var(--primary);}
+    .score-stat .val.wrong{color:#c0392b;}
+    .score-stat .val.pct{color:#22863a;}
+    .score-stat .lbl{font-size:0.68rem;color:#8899bb;text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
+    .score-sep{width:1px;height:38px;background:#dde3f5;flex-shrink:0;}
+    .score-prog-wrap{flex:1;min-width:120px;}
+    .score-prog-track{height:8px;background:var(--pill-bg);border-radius:4px;overflow:hidden;}
+    .score-prog-fill{height:100%;background:var(--primary);border-radius:4px;transition:width .4s;}
+    .score-prog-lbl{font-size:0.68rem;color:#8899bb;margin-top:3px;}
+
+    /* ── Question card ── */
+    .q-card{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:24px 28px;margin-bottom:20px;}
+    .meta-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;align-items:center;}
+    .pill{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--pill-bg);color:var(--pill-text);font-size:0.74rem;font-weight:600;}
+    .pill-id{background:#f1f5f9;color:#475569;margin-left:auto;font-size:0.7rem;}
+    .q-text{font-size:1.05rem;line-height:1.7;margin-bottom:18px;color:#1a1a2e;white-space:pre-wrap;}
+    .q-diagram{text-align:center;margin-bottom:14px;}
+    .q-diagram svg{display:inline-block;max-width:100%;height:auto;border:1px solid #dde3f5;border-radius:6px;background:#fafbff;}
+
+    /* ── MCQ options ── */
+    .options-list{list-style:none;margin-bottom:18px;}
+    .options-list li{margin-bottom:8px;}
+    .opt-btn{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border:2px solid #dde3f5;border-radius:7px;background:#fff;cursor:pointer;font-size:0.97rem;text-align:left;transition:border-color .12s,background .12s;font-family:inherit;}
+    .opt-btn:hover:not([disabled]){border-color:var(--primary);background:var(--pill-bg);}
+    .opt-btn .letter{flex-shrink:0;width:27px;height:27px;border-radius:50%;background:var(--pill-bg);color:var(--pill-text);font-weight:700;font-size:0.8rem;display:flex;align-items:center;justify-content:center;transition:background .12s,color .12s;}
+    .opt-btn .opt-text{flex:1;line-height:1.45;}
+    .opt-btn.correct{border-color:#22863a;background:#f0fff4;}
+    .opt-btn.correct .letter{background:#22863a;color:#fff;}
+    .opt-btn.wrong{border-color:#c0392b;background:#fff5f5;}
+    .opt-btn.wrong .letter{background:#c0392b;color:#fff;}
+    .opt-btn.revealed{border-color:#22863a;background:#f0fff4;}
+    .opt-btn.revealed .letter{background:#22863a;color:#fff;}
+    .opt-btn[disabled]{cursor:default;}
+
+    /* ── Feedback ── */
+    .feedback{padding:9px 14px;border-radius:6px;font-size:0.9rem;font-weight:600;margin-bottom:14px;display:none;}
+    .feedback.correct{background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
+    .feedback.wrong{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+
+    /* ── Solution ── */
+    .solution-block{border-top:2px solid #dde3f5;padding-top:16px;margin-top:14px;display:none;}
+    .sol-header{font-weight:700;color:var(--dark);font-size:0.88rem;margin-bottom:8px;}
+    #solutionText{line-height:1.8;font-size:0.97rem;white-space:pre-wrap;}
+
+    /* ── Action buttons ── */
+    .q-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+    /* ── Mock paper ── */
+    .mock-container{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:24px 28px;margin-bottom:20px;}
+    .mock-title{font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:6px;}
+    .mock-sub{font-size:0.85rem;color:#666;margin-bottom:20px;}
+    .mock-q-card{border:1px solid #dde3f5;border-radius:7px;padding:16px;margin-bottom:16px;background:#fff;}
+    .mock-q-card:last-child{margin-bottom:0;}
+    .mock-q-meta{font-size:0.8rem;color:var(--primary);font-weight:600;margin-bottom:6px;}
+    .mock-q-text{font-size:1rem;margin-bottom:10px;line-height:1.6;white-space:pre-wrap;}
+    .mock-options{list-style:none;margin-bottom:8px;}
+    .mock-options li{margin-bottom:4px;font-size:0.95rem;line-height:1.4;}
+    .mock-solution{border-top:1px solid #dde3f5;padding-top:10px;margin-top:10px;display:none;line-height:1.7;font-size:0.9rem;white-space:pre-wrap;}
+
+    /* ── Fraction CSS ── */
+    .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.88em;line-height:1.1;margin:0 .12em;}
+    .frac .num{border-bottom:1.5px solid currentColor;padding:0 2px 1px;text-align:center;min-width:1ch;}
+    .frac .den{padding:1px 2px 0;text-align:center;min-width:1ch;}
+    .mixed-frac{display:inline-flex;align-items:center;vertical-align:middle;gap:.1em;}
+    .recur-dot{position:relative;display:inline-block;}
+    .recur-dot::before{content:'\02D9';position:absolute;top:-0.45em;left:50%;transform:translateX(-50%);font-size:1.2em;line-height:1;}
+
+    /* ── Footer ── */
+    .footer{text-align:center;font-size:0.75rem;color:#aaa;margin:10px 0 30px;}
+
+    /* ── Print ── */
+    @media print{
+      body{background:#fff;}
+      .header,.controls,.score-bar,.q-card,.footer{display:none!important;}
+      .mock-container{display:block!important;box-shadow:none;padding:0;margin:0;}
+      .mock-solution{display:none;}
+      .mock-q-card{break-inside:avoid;page-break-inside:avoid;}
     }
 
-    .subtitle {
-      color: #555;
-      margin-bottom: 16px;
-      font-size: 0.95rem;
+    @media(max-width:540px){
+      .q-card,.mock-container{padding:16px 14px;}
+      .controls{padding:12px 14px;}
+      .opt-btn{padding:8px 10px;}
     }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-      align-items: center;
-    }
-    select, button {
-      padding: 8px 12px;
-      font-size: 0.95rem;
-      border-radius: 4px;
-      border: 1px solid #c5cbe0;
-      background: #ffffff;
-      cursor: pointer;
-    }
-    button {
-      background: #134b9b;
-      color: #fff;
-      border: none;
-    }
-    button:hover { background: #0f3f84; }
-    button:disabled { background:#9fb2d6; cursor:not-allowed; }
-
-    .meta {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-    .question-text {
-      font-size: 1.05rem;
-      margin: 12px 0 16px;
-      white-space: pre-wrap;
-    }
-    .options {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 16px;
-    }
-    .options li {
-      margin-bottom: 6px;
-      line-height: 1.35;
-    }
-    .option-label {
-      display: inline-block;
-      width: 20px;
-      font-weight: bold;
-    }
-    .solution {
-      border-top: 1px solid #dde3f5;
-      margin-top: 12px;
-      padding-top: 12px;
-      display: none;
-      font-size: 0.95rem;
-    }
-    .solution pre {
-      margin: 0;
-      white-space: pre-wrap;
-      font-family: inherit;
-      line-height: 1.35;
-    }
-    .difficulty { font-weight: bold; }
-    .footer-note {
-      margin-top: 20px;
-      font-size: 0.8rem;
-      color: #999;
-    }
-    .pill {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #e7eefe;
-      color: #134b9b;
-      font-size: 0.75rem;
-      margin-right: 0;
-    }
-    .id-pill {
-      margin-left: auto;
-      background: #eef3ff;
-      color: #0f3f84;
-    }
-    /* ── Stacked fractions ── */
-    .frac {
-      display: inline-flex; flex-direction: column; align-items: center;
-      vertical-align: middle; font-size: 0.88em; line-height: 1.1; margin: 0 0.12em;
-    }
-    .frac .num { border-bottom: 1.5px solid currentColor; padding: 0 2px 1px; text-align: center; min-width: 1ch; }
-    .frac .den { padding: 1px 2px 0; text-align: center; min-width: 1ch; }
-    .mixed-frac { display: inline-flex; align-items: center; vertical-align: middle; gap: 0.1em; }
-    .question-text { font-size: 1.05rem; margin: 12px 0 16px; line-height: 1.6; }
-
-    /* Geometry diagrams */
-    #diagramBlock { margin: 0 0 14px; text-align: center; }
-    #diagramBlock svg { display: inline-block; max-width: 100%; height: auto;
-      border: 1px solid #dde3f5; border-radius: 6px; background: #fafbff; }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <div class="brand-header">
-      <img class="brand-logo" src="data:image/png;base64,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" alt="Mr Nathan's Maths Tuition IOM logo">
-      <div class="brand-title">
-        <h1>Mr Nathan's GCSE Maths Question Bank</h1>
-        <div class="subtitle">
-          <span style="display:block;">Foundation Tier &bull; Random, regeneratable MCQs with full worked solutions.</span>
-          <span style="display:block;">Suitable for AQA, Edexcel, WJEC and IGCSE Foundation Tier.</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="controls">
+<header class="header">
+  <div class="header-logo">&#x1F4D0;</div>
+  <div class="header-text">
+    <h1>Mr Nathan's GCSE Maths Question Bank</h1>
+    <div class="sub">Suitable for AQA, Edexcel, WJEC and IGCSE &bull; Foundation Tier</div>
+    <span class="tier-badge">FOUNDATION TIER</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="controls">
+    <div class="controls-row">
       <label for="topicSelect">Topic:</label>
       <select id="topicSelect">
         <option value="all">(All topics)</option>
@@ -209,43 +154,61 @@ v1.6.0: Teacher feedback batch 2 applied:
         <option value="Geometry & Measure">Geometry & Measure</option>
         <option value="Statistics & Probability">Statistics & Probability</option>
       </select>
-
-      <button id="newQuestionBtn">New Question</button>
-      <button id="mockPaperBtn">Mock Paper</button>
-      <button id="showAllSolutionsBtn" style="display:none;">Show All Solutions</button>
-      <button id="showSolutionBtn">Show Solution</button>
-      <button id="hideSolutionBtn" disabled>Hide Solution</button>
     </div>
-
-    <div class="meta">
-      <span id="topicTag" class="pill"></span>
-      <span id="skillTag" class="pill"></span>
-      <span class="difficulty">Difficulty: <span id="difficultyText"></span></span>
-      <span id="idTag" class="pill id-pill"></span>
-    </div>
-
-    <div class="question-text" id="questionText">
-      Click “New Question” to begin.
-    </div>
-
-    <div id="diagramBlock" style="display:none;"></div>
-
-    <ul class="options" id="optionsList"></ul>
-
-    <div class="solution" id="solutionBlock">
-      <strong>Worked solution</strong>
-      <div id="solutionText" style="margin-top:6px; white-space:pre-wrap; line-height:1.7; font-size:0.95rem;"></div>
-    </div>
-
-    <div id="mockPaperContainer" style="display:none; margin-top:20px;"></div>
-
-    <div class="footer-note">
-      Part of the Mr Nathan’s Maths Tuition GCSE Question Bank Series.
-
+    <div class="controls-row">
+      <button class="btn btn-primary" id="newQuestionBtn">&#9654; New Question</button>
+      <button class="btn btn-secondary" id="mockPaperBtn">&#128203; Mock Paper</button>
+      <button class="btn btn-outline" id="showSolBtn">Show Solution</button>
+      <button class="btn btn-outline" id="hideSolBtn" disabled>Hide Solution</button>
+      <button class="btn btn-green" id="showAllSolBtn" style="display:none;">&#10003; Show All Solutions</button>
+      <button class="btn btn-outline" id="printBtn" style="display:none;">&#128438; Print Paper</button>
     </div>
   </div>
 
+  <div class="score-bar" id="scoreBar">
+    <div class="score-stat"><div class="val" id="sCorrect">0</div><div class="lbl">Correct</div></div>
+    <div class="score-sep"></div>
+    <div class="score-stat"><div class="val wrong" id="sWrong">0</div><div class="lbl">Wrong</div></div>
+    <div class="score-sep"></div>
+    <div class="score-stat"><div class="val pct" id="sPct">&mdash;</div><div class="lbl">Score</div></div>
+    <div class="score-sep"></div>
+    <div class="score-prog-wrap">
+      <div class="score-prog-track"><div class="score-prog-fill" id="sProgFill" style="width:0%"></div></div>
+      <div class="score-prog-lbl" id="sProgLbl">0 answered</div>
+    </div>
+  </div>
+
+  <div class="q-card" id="qCard">
+    <div class="meta-row" id="metaRow">
+      <span class="pill" id="topicPill"></span>
+      <span class="pill" id="skillPill"></span>
+      <span class="pill" id="diffPill"></span>
+      <span class="pill pill-id" id="idPill"></span>
+    </div>
+    <div class="q-text" id="qText">Click <strong>New Question</strong> to begin.</div>
+    <div class="q-diagram" id="qDiagram" style="display:none;"></div>
+    <ul class="options-list" id="optionsList"></ul>
+    <div class="feedback" id="qFeedback"></div>
+    <div class="q-actions">
+      <button class="btn btn-primary" id="nextBtn" onclick="generateQuestion()" style="display:none;">&#9654; Next Question</button>
+    </div>
+    <div class="solution-block" id="solutionBlock">
+      <div class="sol-header">&#x1F4DD; Worked Solution</div>
+      <div id="solutionText"></div>
+    </div>
+  </div>
+
+  <div class="mock-container" id="mockContainer" style="display:none;"></div>
+
+  <div class="footer">Part of the Mr Nathan's Maths Tuition GCSE Maths Question Bank Series &bull; Foundation Tier &bull; Suitable for AQA, Edexcel, WJEC &amp; IGCSE</div>
+
+</div>
+
 <script>
+/* =============================================
+   FACTORY CODE (from Foundation Tier TCP)
+   ============================================= */
+
 /* =========================
    Utilities (GCSE-faithful)
    ========================= */
@@ -262,6 +225,8 @@ function shuffleArray(arr){
 function gcd(a,b){
   a = Math.abs(a); b = Math.abs(b);
   while(b !== 0){ const t = a % b; a = b; b = t; }
+function fracStr(n,d){const g=gcd(Math.abs(n),Math.abs(d));return d/g===1?String(n/g):`${n/g}/${d/g}`;}
+
   return a;
 }
 
@@ -384,7 +349,6 @@ function buildMCQOptions(correctText, distractorTexts){
    NUMBER generators (exam-complete)
    ========================= */
 
-/* Allowed percentage values with display labels (numerator/denominator × 100 for exact arithmetic) */
 const ALLOWED_PCTS = [
   {n:1,d:100,label:"1"},
   {n:2,d:100,label:"2"},
@@ -393,12 +357,12 @@ const ALLOWED_PCTS = [
   {n:5,d:100,label:"5"},
   {n:10,d:100,label:"10"},
   {n:12,d:100,label:"12"},
-  {n:25,d:200,label:"12½"},    // 12.5%
+  {n:25,d:200,label:"12½"},
   {n:15,d:100,label:"15"},
   {n:20,d:100,label:"20"},
   {n:25,d:100,label:"25"},
   {n:30,d:100,label:"30"},
-  {n:1,d:3,label:"33⅓"},       // 33⅓%
+  {n:1,d:3,label:"33⅓"},
   {n:35,d:100,label:"35"},
   {n:40,d:100,label:"40"},
   {n:60,d:100,label:"60"},
@@ -406,11 +370,9 @@ const ALLOWED_PCTS = [
   {n:80,d:100,label:"80"}
 ];
 
-/* Apply a percentage (pctObj) increase or decrease to a value in pence.
-   Returns {finalPence, multNum, multDen} where final = original * multNum/multDen.
-   Returns null if result is not a whole number of pence. */
+/* Apply a percentage increase or decrease to a value in pence.
+   Returns {finalPence, multNum, multDen} or null if result is not whole pence. */
 function applyPct(originalPence, pctObj, kind){
-  // kind="increased": mult = 1 + p = (d+n)/d   kind="reduced": mult = 1 - p = (d-n)/d
   const multNum = kind === "increased" ? (pctObj.d + pctObj.n) : (pctObj.d - pctObj.n);
   const multDen = pctObj.d;
   if(multNum <= 0) return null;
@@ -1391,8 +1353,7 @@ function makeBoundsArea(){
 }
 
 function makeMixedPercentRatio(){
-  // Uses ALLOWED_PCTS for exact fraction arithmetic — no recurring decimals, no float rounding.
-  // All money computed in whole pence using integer arithmetic only.
+  // Ratio pairs: include 1:2, 1:3, 1:4, 1:5, 1:6 and others
   const ratioPairs = [
     [1,2],[1,3],[1,4],[1,5],[1,6],
     [2,3],[2,5],[3,4],[3,5],[4,5],
@@ -1401,33 +1362,23 @@ function makeMixedPercentRatio(){
   const pair = choice(ratioPairs);
   const ratioA = pair[0], ratioB = pair[1];
   const parts = ratioA + ratioB;
-
+  // pct can be increase or decrease; wider range
   const pctObj = choice(ALLOWED_PCTS);
   const direction = choice(['increase','decrease']);
-
-  // Choose a unit (pence per ratio-part) so that the first share in pence
-  // is an exact integer AND applying the percentage gives an exact integer pence result.
-  // firstSharePence = ratioA × unitPence
-  // newSharePence   = firstSharePence × multNum / multDen  must be integer
-  // So unitPence × ratioA × multNum must be divisible by multDen.
   const multNum = direction === 'increase' ? (pctObj.d + pctObj.n) : (pctObj.d - pctObj.n);
   const multDen = pctObj.d;
   if(multNum <= 0) return makeMixedPercentRatio();
-
-  // Pick a base unit in pounds (whole £), convert to pence
   const unitPounds = choice([5,10,15,20,25,30,40,50]);
   const unitPence = unitPounds * 100;
   const firstSharePence = ratioA * unitPence;
   const totalPence = parts * unitPence;
-
-  // Exact integer arithmetic: newShare = firstShare × multNum / multDen
   if((firstSharePence * multNum) % multDen !== 0) return makeMixedPercentRatio();
   const newSharePence = (firstSharePence * multNum) / multDen;
 
   const correctText = moneyFromPence(newSharePence);
-  const wrong1 = moneyFromPence(firstSharePence);                     // forgot to apply %
-  const wrong2 = moneyFromPence((totalPence * multNum) / multDen);    // applied % to whole total
-  const wrong3 = moneyFromPence(ratioB * unitPence);                  // picked wrong share
+  const wrong1 = moneyFromPence(firstSharePence);
+  const wrong2 = moneyFromPence((totalPence * multNum) / multDen);
+  const wrong3 = moneyFromPence(ratioB * unitPence);
 
   const mcq = buildMCQOptions(correctText, [wrong1, wrong2, wrong3]);
   if(!mcq) return makeMixedPercentRatio();
@@ -1660,6 +1611,8 @@ function makeFactoriseQuadraticQuestion(){
   if(s === r) s += (s > 0 ? 1 : -1);
   const b = r + s;
   const c = r * s;
+  if(b === 0) return makeFactoriseQuadraticQuestion();
+  if(b === 0) return makeFactoriseQuadraticQuestion();
   const correctText = `${algFactor("n", r)}${algFactor("n", s)}`;
   const wrong1 = `${algFactor("n", -r)}${algFactor("n", -s)}`;
   const wrong2 = `${algFactor("n", r)}${algFactor("n", -s)}`;
@@ -3103,11 +3056,8 @@ function makeParallelogramAreaQuestion(){
 
 function makeTrapeziumAreaQuestion(){
   // Always ensure shorter parallel side a < longer parallel side b to prevent diagram clipping
-  const aChoices = [4,5,6,7,8,9,10];
-  const bChoices = [11,12,13,14,15,16,18,20];
-  const a = choice(aChoices);
-  const b = choice(bChoices);
-  // a is always < b by construction above, so no clipping can occur
+  const a = choice([4,5,6,7,8,9,10]);
+  const b = choice([11,12,13,14,15,16,18,20]);
   const h = choice([4,5,6,8,10]);
   if(((a + b) * h) % 2 !== 0) return makeTrapeziumAreaQuestion();
   const area = ((a + b) * h) / 2;
@@ -3119,43 +3069,31 @@ function makeTrapeziumAreaQuestion(){
   ]);
   if(!mcq) return makeTrapeziumAreaQuestion();
 
-  // Two orientations: 0 = narrow top / wide bottom, 1 = wide top / narrow bottom (flipped)
-  const orient = choice([0, 0, 1]);  // bias toward standard orientation
-
-  // Safe SVG canvas: 285×185. Margin 28px each side, so usable x: 28..257, y top=30, bottom=155
+  // Two orientations: 0 = narrow top / wide bottom (standard), 1 = wide top / narrow bottom
+  const orient = choice([0, 0, 1]);
   const LEFT=28, RIGHT=257, TOP=30, BOT=155;
   const W=285, H=185;
   const midX=(LEFT+RIGHT)/2;
-  const halfB=(RIGHT-LEFT)/2;   // half-width of longer side (b)
-  // half-width of shorter side, scaled proportionally
+  const halfB=(RIGHT-LEFT)/2;
   const halfA = halfB * a / b;
 
   let bx1,bx2,by,tx1,tx2,ty;
   if(orient === 0){
-    // standard: wide side at bottom, narrow at top
     bx1=LEFT;  bx2=RIGHT; by=BOT;
     tx1=Math.round(midX-halfA); tx2=Math.round(midX+halfA); ty=TOP;
   } else {
-    // flipped: wide side at top, narrow at bottom
     tx1=LEFT;  tx2=RIGHT; ty=TOP;
     bx1=Math.round(midX-halfA); bx2=Math.round(midX+halfA); by=BOT;
   }
 
-  // Label the parallel sides correctly regardless of orientation
-  const wideLabel  = orient===0 ? b+" cm" : b+" cm";
-  const narrowLabel= orient===0 ? a+" cm" : a+" cm";
-  const wideMidX   = (LEFT+RIGHT)/2;
-  const narrowMidX = midX;  // always centred on midX
-
-  // Height dashed line (vertical, centred)
   const hmx = Math.round(midX);
   const dBody =
     `<polygon points="${bx1},${by} ${bx2},${by} ${tx2},${ty} ${tx1},${ty}" fill="#e8f0ff" stroke="#2c4fa3" stroke-width="2"/>` +
     `<line x1="${hmx}" y1="${ty}" x2="${hmx}" y2="${by}" stroke="#555" stroke-width="1.5" stroke-dasharray="5,4"/>` +
     `<path d="M ${hmx-8},${by} L ${hmx-8},${by-8} L ${hmx},${by-8}" fill="none" stroke="#333" stroke-width="1.5"/>` +
     (orient===0
-      ? gText(wideMidX,  by+18, b+" cm") + gText(narrowMidX, ty-12, a+" cm")
-      : gText(wideMidX,  ty-12, b+" cm") + gText(narrowMidX, by+18, a+" cm")) +
+      ? gText(midX, by+18, b+" cm") + gText(midX, ty-12, a+" cm")
+      : gText(midX, ty-12, b+" cm") + gText(midX, by+18, a+" cm")) +
     gText(hmx+13, Math.round((ty+by)/2), h+" cm", 13, "start");
 
   return {
@@ -3675,12 +3613,20 @@ function makePythagorasMissingLegQuestion(){
   };
 }
 
+/* Expanded Pythagorean triple pool for trig — reduces repetition */
+const TRIG_TRIPLES = [
+  [3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,40,41],
+  [6,8,10],[9,12,15],[12,16,20],[15,20,25]
+];
+
 /* Draw a right-angled triangle SVG in one of 4 orientations.
-   orientation: 0=right-angle bottom-left, 1=bottom-right, 2=top-left, 3=top-right
-   Labels: opp, adj, hyp sides and theta angle. Returns SVG string. */
-function drawTrigDiagram(opp, adj, hyp, ratio, orientation){
-  /* Canvas 300×195. A=right-angle, B=theta, C=third vertex.
-     Axis-aware label positioning; θ shown with arc (like GCSE diagrams). */
+   orientation: 0=RA bottom-left, 1=RA bottom-right, 2=RA top-left, 3=RA top-right.
+   θ is placed at the non-right-angle vertex on the same vertical side as RA. */
+function drawTrigDiagram(oppLabel, adjLabel, hypLabel, ratio, orientation){
+  /* Canvas 300×195 — axis-aware label positioning prevents all clipping.
+     A = right-angle vertex, B = theta vertex, C = third vertex.
+     Vertical legs push label horizontally; horizontal legs push vertically;
+     hypotenuse uses perpendicular outward offset.                         */
   const W=300, H=195;
   const cfgs = [
     // 0: right angle bottom-left, θ top-left
@@ -3720,29 +3666,20 @@ function drawTrigDiagram(opp, adj, hyp, ratio, orientation){
     return `<polyline points="${q1.x.toFixed(1)},${q1.y.toFixed(1)} ${q3.x.toFixed(1)},${q3.y.toFixed(1)} ${q2.x.toFixed(1)},${q2.y.toFixed(1)}" fill="none" stroke="#444" stroke-width="1.5"/>`;
   }
 
-  // θ arc at B between the two sides meeting at B (AB and BC)
-  function thetaArc(th, ra, op){
-    const dx1=ra.x-th.x, dy1=ra.y-th.y;
-    const dx2=op.x-th.x, dy2=op.y-th.y;
-    let a1=Math.atan2(dy1,dx1), a2=Math.atan2(dy2,dx2);
-    const r=26; const pts=[];
-    // always sweep the smaller arc
-    let s=a1, e=a2;
-    let diff = ((e-s) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
-    if(diff > Math.PI){ let tmp=s; s=e; e=tmp; diff=2*Math.PI-diff; }
-    const steps=14;
-    for(let i=0;i<=steps;i++){
-      const ang=s+(diff)*i/steps;
-      pts.push(`${(th.x+r*Math.cos(ang)).toFixed(1)},${(th.y+r*Math.sin(ang)).toFixed(1)}`);
-    }
-    // θ label at arc midpoint, pushed further out
-    const ma=s+diff/2;
-    const lx=(th.x+(r+16)*Math.cos(ma)).toFixed(1);
-    const ly=(th.y+(r+16)*Math.sin(ma)).toFixed(1);
-    return `<path d="M ${pts.join(' L ')}" fill="none" stroke="#c00" stroke-width="1.8"/>` +
-      `<text x="${lx}" y="${ly}" font-size="15" text-anchor="middle" dominant-baseline="middle" fill="#c00" font-style="italic">θ</text>`;
+  // θ arc at B
+  function thetaArc(th,ra,op){
+    const dx1=ra.x-th.x,dy1=ra.y-th.y,dx2=op.x-th.x,dy2=op.y-th.y;
+    let a1=Math.atan2(dy1,dx1),a2=Math.atan2(dy2,dx2);
+    const r=22; const pts=[];
+    let s=Math.min(a1,a2),e=Math.max(a1,a2);
+    if(e-s>Math.PI){let t=s;s=e;e=t+2*Math.PI;}
+    for(let i=0;i<=12;i++){const ang=s+(e-s)*i/12;pts.push(`${(th.x+r*Math.cos(ang)).toFixed(1)},${(th.y+r*Math.sin(ang)).toFixed(1)}`);}
+    const ma=(s+e)/2;
+    return `<path d="M ${pts.join(' L ')}" fill="none" stroke="#b21f2d" stroke-width="1.8"/>` +
+      `<text x="${(th.x+(r+14)*Math.cos(ma)).toFixed(1)}" y="${(th.y+(r+14)*Math.sin(ma)).toFixed(1)}" font-size="15" text-anchor="middle" dominant-baseline="middle" fill="#b21f2d">θ</text>`;
   }
 
+  // BC = hypotenuse, AB = adjacent to θ, AC = opposite to θ
   const lHyp = labelPos(B, C, 26);
   const lAdj = labelPos(A, B, 28);
   const lOpp = labelPos(A, C, 26);
@@ -3751,97 +3688,100 @@ function drawTrigDiagram(opp, adj, hyp, ratio, orientation){
     `<polygon points="${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}" fill="#e8f0ff" stroke="#2c4fa3" stroke-width="2"/>` +
     raSq(A, B, C) +
     thetaArc(B, A, C) +
-    `<text x="${lHyp.x.toFixed(1)}" y="${lHyp.y.toFixed(1)}" font-size="13" text-anchor="middle" dominant-baseline="middle" fill="#b21f2d">${hyp}</text>` +
-    `<text x="${lAdj.x.toFixed(1)}" y="${lAdj.y.toFixed(1)}" font-size="13" text-anchor="middle" dominant-baseline="middle" fill="#333">${adj}</text>` +
-    `<text x="${lOpp.x.toFixed(1)}" y="${lOpp.y.toFixed(1)}" font-size="13" text-anchor="middle" dominant-baseline="middle" fill="#333">${opp}</text>`;
+    `<text x="${lHyp.x.toFixed(1)}" y="${lHyp.y.toFixed(1)}" font-size="13" text-anchor="middle" dominant-baseline="middle" fill="#b21f2d">${hypLabel}</text>` +
+    `<text x="${lAdj.x.toFixed(1)}" y="${lAdj.y.toFixed(1)}" font-size="13" text-anchor="middle" dominant-baseline="middle" fill="#111">${adjLabel}</text>` +
+    `<text x="${lOpp.x.toFixed(1)}" y="${lOpp.y.toFixed(1)}" font-size="13" text-anchor="middle" dominant-baseline="middle" fill="#111">${oppLabel}</text>`;
 
-  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="font-family:Arial,sans-serif;">${body}</svg>`;
+  return gSvg(W, H, body);
 }
-
-const TRIG_TRIPLES = [
-  [3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,40,41],
-  [6,8,10],[9,12,15],[12,16,20],[5,5,7],[8,6,10] // some less common
-].filter(t => t[0]>0 && t[1]>0 && t[2]>0);
 
 function makeTrigSOHQuestion(){
   const t = choice(TRIG_TRIPLES);
-  const orientation = choice([0,1,2,3]);
-  // randomly pick which angle is theta — either the one opposite t[0] or opposite t[1]
   const thetaChoice = choice([0,1]);
-  const opposite = thetaChoice === 0 ? t[0] : t[1];
-  const adjacent = thetaChoice === 0 ? t[1] : t[0];
+  const opposite = thetaChoice===0 ? t[0] : t[1];
+  const adjacent = thetaChoice===0 ? t[1] : t[0];
   const hyp = t[2];
-  const text = `${opposite}/${hyp}`;
+  const orientation = choice([0,1,2,3]);
+  const simpFrac=(n,d)=>{const g=gcd(n,d);return `${n/g}/${d/g}`.replace(/\/1$/,n/g+"");}
+  const text = simpFrac(opposite,hyp);
 
   const mcq = buildMCQOptions(text, [
-    `${adjacent}/${hyp}`,
-    `${hyp}/${opposite}`,
-    `${opposite}/${adjacent}`
+    simpFrac(adjacent,hyp),
+    simpFrac(hyp,opposite),
+    simpFrac(opposite,adjacent)
   ]);
   if(!mcq) return makeTrigSOHQuestion();
 
-  const diagram = drawTrigDiagram(`${opposite} cm`, `${adjacent} cm`, `${hyp} cm`, 'sin', orientation);
   return {
     id: makeID("GEO"),
-    topic: "Geometry & Measure", skill: "Trigonometry – sine ratio", difficulty: "Foundation",
+    topic: "Geometry & Measure",
+    skill: "Trigonometry – sine ratio",
+    difficulty: "Foundation",
     question: `In the right-angled triangle shown, what is sin θ?`,
-    diagram,
-    options: mcq.options, correctIndex: mcq.correctIndex,
-    solution: `sin θ = opposite ÷ hypotenuse = ${opposite}/${hyp}`
+    diagram: drawTrigDiagram(`${opposite} cm`, `${adjacent} cm`, `${hyp} cm`, 'sin', orientation),
+    options: mcq.options,
+    correctIndex: mcq.correctIndex,
+    solution: `sin θ = opposite ÷ hypotenuse = ${simpFrac(opposite,hyp)}`
   };
 }
 
 function makeTrigCAHQuestion(){
   const t = choice(TRIG_TRIPLES);
-  const orientation = choice([0,1,2,3]);
   const thetaChoice = choice([0,1]);
-  const adjacent = thetaChoice === 0 ? t[1] : t[0];
-  const opposite = thetaChoice === 0 ? t[0] : t[1];
+  const adjacent = thetaChoice===0 ? t[1] : t[0];
+  const opposite = thetaChoice===0 ? t[0] : t[1];
   const hyp = t[2];
-  const text = `${adjacent}/${hyp}`;
+  const orientation = choice([0,1,2,3]);
+  const simpFrac=(n,d)=>{const g=gcd(n,d);return `${n/g}/${d/g}`.replace(/\/1$/,n/g+"");}
+  const text = simpFrac(adjacent,hyp);
 
   const mcq = buildMCQOptions(text, [
-    `${opposite}/${hyp}`,
-    `${hyp}/${adjacent}`,
-    `${opposite}/${adjacent}`
+    simpFrac(opposite,hyp),
+    simpFrac(hyp,adjacent),
+    simpFrac(opposite,adjacent)
   ]);
   if(!mcq) return makeTrigCAHQuestion();
 
-  const diagram = drawTrigDiagram(`${opposite} cm`, `${adjacent} cm`, `${hyp} cm`, 'cos', orientation);
   return {
     id: makeID("GEO"),
-    topic: "Geometry & Measure", skill: "Trigonometry – cosine ratio", difficulty: "Foundation",
+    topic: "Geometry & Measure",
+    skill: "Trigonometry – cosine ratio",
+    difficulty: "Foundation",
     question: `In the right-angled triangle shown, what is cos θ?`,
-    diagram,
-    options: mcq.options, correctIndex: mcq.correctIndex,
-    solution: `cos θ = adjacent ÷ hypotenuse = ${adjacent}/${hyp}`
+    diagram: drawTrigDiagram(`${opposite} cm`, `${adjacent} cm`, `${hyp} cm`, 'cos', orientation),
+    options: mcq.options,
+    correctIndex: mcq.correctIndex,
+    solution: `cos θ = adjacent ÷ hypotenuse = ${simpFrac(adjacent,hyp)}`
   };
 }
 
 function makeTrigTOAQuestion(){
   const t = choice(TRIG_TRIPLES);
-  const orientation = choice([0,1,2,3]);
   const thetaChoice = choice([0,1]);
-  const opposite = thetaChoice === 0 ? t[0] : t[1];
-  const adjacent = thetaChoice === 0 ? t[1] : t[0];
+  const opposite = thetaChoice===0 ? t[0] : t[1];
+  const adjacent = thetaChoice===0 ? t[1] : t[0];
   const hyp = t[2];
-  const text = `${opposite}/${adjacent}`;
+  const orientation = choice([0,1,2,3]);
+  const simpFrac=(n,d)=>{const g=gcd(n,d);return `${n/g}/${d/g}`.replace(/\/1$/,n/g+"");}
+  const text = simpFrac(opposite,adjacent);
 
   const mcq = buildMCQOptions(text, [
-    `${adjacent}/${opposite}`,
-    `${hyp}/${adjacent}`,
-    `${opposite}/${hyp}`
+    simpFrac(adjacent,opposite),
+    simpFrac(hyp,adjacent),
+    simpFrac(opposite,hyp)
   ]);
   if(!mcq) return makeTrigTOAQuestion();
 
-  const diagram = drawTrigDiagram(`${opposite} cm`, `${adjacent} cm`, `${hyp} cm`, 'tan', orientation);
   return {
     id: makeID("GEO"),
-    topic: "Geometry & Measure", skill: "Trigonometry – tangent ratio", difficulty: "Foundation",
+    topic: "Geometry & Measure",
+    skill: "Trigonometry – tangent ratio",
+    difficulty: "Foundation",
     question: `In the right-angled triangle shown, what is tan θ?`,
-    diagram,
-    options: mcq.options, correctIndex: mcq.correctIndex,
-    solution: `tan θ = opposite ÷ adjacent = ${opposite}/${adjacent}`
+    diagram: drawTrigDiagram(`${opposite} cm`, `${adjacent} cm`, `${hyp} cm`, 'tan', orientation),
+    options: mcq.options,
+    correctIndex: mcq.correctIndex,
+    solution: `tan θ = opposite ÷ adjacent = ${simpFrac(opposite,adjacent)}`
   };
 }
 
@@ -4009,8 +3949,7 @@ function makeFrequencyMeanQuestion(){
   const mcq = buildMCQOptions(String(mean), [String(total), String(totalFreq), String(values[1])]);
   if(!mcq) return makeFrequencyMeanQuestion();
 
-  // Build a rendered HTML table as the diagram
-  const fxRows = values.map((v,i) => `<tr><td>${v}</td><td>${freqs[i]}</td><td>${v*freqs[i]}</td></tr>`).join('');
+  // Rendered HTML table matching GCSE exam style
   const tableHtml = `
     <table style="border-collapse:collapse; margin:8px auto; font-size:0.95rem;">
       <thead>
@@ -4299,7 +4238,7 @@ function makeRelativeFrequency(){
 
   const mcq = buildMCQOptions(ans, [
     new Fraction(trials-successes,trials).toFractionString(),
-    `${successes}/${trials-successes}`,
+    new Fraction(successes,trials-successes).toFractionString(),
     String(successes)
   ]);
   if(!mcq) return makeRelativeFrequency();
@@ -4320,39 +4259,28 @@ Find the relative frequency of the event.`,
 function makePieChartAngle(){
   const qType = choice([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
-  // Helper: generate 4 valid angles that sum to 360 and all give integer counts for n people
   function genAngles4(n, tries){
     for(let t=0;t<(tries||200);t++){
-      const a = randInt(1,n-3);
-      const b = randInt(1,n-a-2);
-      const c = randInt(1,n-a-b-1);
-      const d = n-a-b-c;
+      const a=randInt(1,n-3), b=randInt(1,n-a-2), c=randInt(1,n-a-b-1), d=n-a-b-c;
       if(d<=0) continue;
-      // angles = a/n×360 etc — must be whole numbers
       if((a*360)%n!==0||(b*360)%n!==0||(c*360)%n!==0||(d*360)%n!==0) continue;
       return [a,b,c,d].map(x=>({count:x, angle:(x*360)/n}));
     }
     return null;
   }
 
-  // Types 1-4: boys sport — Football, Athletics, Cricket, Basketball
+  // Types 1-4: boys sport — find angle given number
   if(qType <= 4){
     const nList = [12,18,20,24,30,36,40,45,60,72];
     let n, slices;
-    for(let attempt=0; attempt<30; attempt++){
-      n = choice(nList);
-      slices = genAngles4(n, 100);
-      if(slices) break;
+    for(let attempt=0;attempt<30;attempt++){
+      n=choice(nList); slices=genAngles4(n,100); if(slices) break;
     }
     if(!slices) return makePieChartAngle();
     const cats = ["Football","Athletics","Cricket","Basketball"];
-    const idx = qType - 1; // which category to ask about
+    const idx = qType-1;
     const asked = slices[idx];
-    const correct = `${asked.angle}°`;
-    const wrong1 = `${asked.count}°`;
-    const wrong2 = `${Math.round(asked.angle+10)}°`;
-    const wrong3 = `${Math.round(360-asked.angle)}°`;
-    const mcq = buildMCQOptions(correct, [wrong1, wrong2, wrong3]);
+    const mcq = buildMCQOptions(`${asked.angle}°`, [`${asked.count}°`, `${Math.round(asked.angle+10)}°`, `${360-asked.angle}°`]);
     if(!mcq) return makePieChartAngle();
     const summaryLines = cats.map((c,i)=>`${c}: ${slices[i].count} boys`).join(', ');
     return {
@@ -4362,29 +4290,22 @@ function makePieChartAngle(){
         `(${summaryLines})\n` +
         `What angle represents ${cats[idx]} in the pie chart?`,
       options: mcq.options, correctIndex: mcq.correctIndex,
-      solution:
-        `Angle = (${asked.count}/${n}) × 360° = ${asked.angle}°`
+      solution: `Angle = (${asked.count}/${n}) × 360° = ${asked.angle}°`
     };
   }
 
-  // Types 5-8: given angles → find number of girls (Hockey, Tennis, Netball, Swimming)
+  // Types 5-8: girls sport — find number given angle
   if(qType <= 8){
     const nList = [12,18,20,24,30,36,40,45,60,72];
     let n, slices;
-    for(let attempt=0; attempt<30; attempt++){
-      n = choice(nList);
-      slices = genAngles4(n, 100);
-      if(slices) break;
+    for(let attempt=0;attempt<30;attempt++){
+      n=choice(nList); slices=genAngles4(n,100); if(slices) break;
     }
     if(!slices) return makePieChartAngle();
     const cats = ["Hockey","Tennis","Netball","Swimming"];
-    const idx = qType - 5;
+    const idx = qType-5;
     const asked = slices[idx];
-    const correct = String(asked.count);
-    const wrong1 = String(asked.angle);
-    const wrong2 = String(asked.count + 1);
-    const wrong3 = String(Math.round(n - asked.count));
-    const mcq = buildMCQOptions(correct, [wrong1, wrong2, wrong3]);
+    const mcq = buildMCQOptions(String(asked.count), [`${asked.angle}`, String(asked.count+1), String(n-asked.count)]);
     if(!mcq) return makePieChartAngle();
     const summaryLines = cats.map((c,i)=>`${c}: ${slices[i].angle}°`).join(', ');
     return {
@@ -4394,13 +4315,12 @@ function makePieChartAngle(){
         `The angles are: ${summaryLines}.\n` +
         `How many girls chose ${cats[idx]}?`,
       options: mcq.options, correctIndex: mcq.correctIndex,
-      solution:
-        `Number = (${asked.angle}/360) × ${n} = ${asked.count} girls`
+      solution: `Number = (${asked.angle}/360) × ${n} = ${asked.count} girls`
     };
   }
 
-  // Types 9-12: heating survey — 4 categories, ask for ANGLE given counts
-  // Types 13-16: heating survey — 4 categories, ask for NUMBER given angles
+  // Types 9-12: heating survey — ask for ANGLE given counts
+  // Types 13-16: heating survey — ask for NUMBER given angles
   {
     const heatCats = ["Oil","Coal","Electricity","Gas"];
     const nList = [12,18,20,24,30,36,40,45,60,72];
@@ -4409,18 +4329,12 @@ function makePieChartAngle(){
       hn = choice(nList); hSlices = genAngles4(hn, 100); if(hSlices) break;
     }
     if(!hSlices) return makePieChartAngle();
-
     if(qType <= 12){
-      // Types 9-12: given counts → find angle
       const idx = qType - 9;
       const asked = hSlices[idx];
-      const correct = `${asked.angle}°`;
-      const wrong1 = `${asked.count}°`;
-      const wrong2 = `${Math.round(asked.angle + 15)}°`;
-      const wrong3 = `${360 - asked.angle}°`;
-      const mcq = buildMCQOptions(correct, [wrong1, wrong2, wrong3]);
+      const mcq = buildMCQOptions(`${asked.angle}°`, [`${asked.count}°`, `${Math.round(asked.angle+15)}°`, `${360-asked.angle}°`]);
       if(!mcq) return makePieChartAngle();
-      const summaryLines = heatCats.map((c,i) => `${c}: ${hSlices[i].count} people`).join(', ');
+      const summaryLines = heatCats.map((c,i)=>`${c}: ${hSlices[i].count} people`).join(', ');
       return {
         id: makeID("STAT"), topic: "Statistics & Probability", skill: "Pie chart angle", difficulty: "Foundation",
         question:
@@ -4431,16 +4345,11 @@ function makePieChartAngle(){
         solution: `Angle = (${asked.count}/${hn}) × 360° = ${asked.angle}°`
       };
     } else {
-      // Types 13-16: given angles → find number of people
       const idx = qType - 13;
       const asked = hSlices[idx];
-      const correct = String(asked.count);
-      const wrong1 = String(asked.angle);
-      const wrong2 = String(asked.count + 1);
-      const wrong3 = String(hn - asked.count);
-      const mcq = buildMCQOptions(correct, [wrong1, wrong2, wrong3]);
+      const mcq = buildMCQOptions(String(asked.count), [String(asked.angle), String(asked.count+1), String(hn-asked.count)]);
       if(!mcq) return makePieChartAngle();
-      const summaryLines = heatCats.map((c,i) => `${c}: ${hSlices[i].angle}°`).join(', ');
+      const summaryLines = heatCats.map((c,i)=>`${c}: ${hSlices[i].angle}°`).join(', ');
       return {
         id: makeID("STAT"), topic: "Statistics & Probability", skill: "Pie chart angle", difficulty: "Foundation",
         question:
@@ -4687,335 +4596,547 @@ function makeTrueFalseConversion_F(){
 
 
 
-const TOPIC_MAP = {
 
-  "Number": [
-    makeFractionOfAmount,
-    makeRatioSimplify,
-    makeRatioShare,
-    makePercentChange,
-    makeIndicesEvaluate,
-    makeMixedPercentRatio,        // wider ratios & pcts, inc & dec
-    makeCompoundPercent,
-    makeAdvancedReversePercent,
-    makeBestBuy,
-    makeFractionAddSub,
-    makeFractionMultiply,
-    makeFractionOfAmount,
-    makeMultiStepPercentThenFraction,
-    makeReversePercentMoney,
-    makeDirectProportion,
-    makeStandardFormConvert,
-    makeStandardFormMultiply,
-    makeStandardFormDivide,
-    makeBoundsErrorInterval,
-    makeSpeedQuestion,
-    makeDensityQuestion,
+/* BIDMAS Foundation */
+function makeBIDMASFoundation(){
+  // Question types: A=two-op (×÷ before +−), B=brackets, C=indices
+  const type = choice(["A","A","B","B","C","C","A"]);
 
-    // FOUNDATION TYPES — weighted ×3 so students see them regularly
-    makeTrueFalsePercent_F,    makeTrueFalsePercent_F,    makeTrueFalsePercent_F,
-    makeTrueFalseConversion_F, makeTrueFalseConversion_F, makeTrueFalseConversion_F,
-  ],
-
-  "Algebra": [
-    makeSimplifyExpressionQuestion,
-    makeExpandSingleBracketQuestion,
-    makeExpandDoubleBracketQuestion,
-    makeFactoriseCommonFactorQuestion,
-    makeEquationOneStepQuestion,
-    makeEquationTwoStepQuestion,
-    makeEquationBracketsQuestion,
-    makeEquationUnknownBothSidesQuestion,
-    makeEquationFromWordsQuestion,
-    makeEquationCreatingQuestion,
-    makeRearrangingFormulaQuestion,
-    makeAlgebraicFractionSimplifyQuestion,
-    makeAlgebraicFractionMultiplyDivideQuestion,
-    makeAlgebraicFractionEquationQuestion,
-    makeSequenceTermToTermQuestion,
-    makeSequenceNthTermQuestion,
-    makeSequencePatternQuestion,
-    makeInequalityQuestion,
-    makeInequalityInterpretationQuestion,
-    makeTrialImprovementQuestion,
-
-    // FOUNDATION — weighted ×3 so students see them regularly
-    makeThoughtNumberMultiply_F, makeThoughtNumberMultiply_F, makeThoughtNumberMultiply_F,
-    makeThoughtNumberDivide_F,   makeThoughtNumberDivide_F,   makeThoughtNumberDivide_F,
-    makeThoughtNumberTwoStep_F,  makeThoughtNumberTwoStep_F,  makeThoughtNumberTwoStep_F,
-  ],
-
-  "Geometry & Measure": [
-    makeRectangleAreaQuestion,
-    makeRectanglePerimeterQuestion,
-    makeTriangleAreaQuestion,
-    makeParallelogramAreaQuestion,
-    makeTrapeziumAreaQuestion,
-    makeCircleCircumferenceQuestion,
-    makeCircleAreaQuestion,
-    makePrismVolumeQuestion,
-    makeCuboidVolumeQuestion,
-    makeCylinderVolumeQuestion,
-    makeScaleFactorLengthQuestion,
-    makeScaleFactorAreaQuestion,
-    makeAnglesOnLineQuestion,
-    makeAnglesAroundPointQuestion,
-    makeTriangleAngleQuestion,
-    makeQuadrilateralAngleQuestion,
-    makePolygonInteriorAngleQuestion,
-    makeRegularPolygonExteriorQuestion,
-    makePythagorasQuestion,
-    makePythagorasMissingLegQuestion,
-    makeTrigSOHQuestion,
-    makeTrigCAHQuestion,
-    makeTrigTOAQuestion
-  ],
-
-  "Statistics & Probability": [
-    makeMeanQuestionInteger,
-    makeMissingMeanQuestion,
-    makeMedianQuestion,
-    makeModeQuestion,
-    makeRangeQuestion,
-    makeFrequencyMeanQuestion,
-    makePieChartAngle,
-    makeScatterCorrelation,
-
-    // CONDITION QUESTIONS
-    makeCombinedStatsConditionsQuestion,
-
-    // FOUNDATION PROBABILITY QUESTIONS
-    makeProbabilitySingleEvent,
-    makeProbabilityNotEvent,
-    makeExpectedFrequency,
-    makeProbabilityFraction,
-    makeMutuallyExclusiveProbability,
-    makeIndependentProbability,
-    makeRelativeFrequency
-  ]
-};
-
-const ALL_TOPICS = ["Number","Algebra","Geometry & Measure","Statistics & Probability"];
-let topicBag = [];
-function refillTopicBag(){ topicBag = shuffleArray(ALL_TOPICS.slice()); }
-function pickTopicEvenly(){
-  if(topicBag.length === 0) refillTopicBag();
-  return topicBag.pop();
-}
-
-/* Per-topic factory bags — even coverage for all topics */
-const factoryBags = {};
-function pickFactoryEvenly(topic){
-  const all = TOPIC_MAP[topic] || [];
-  if(all.length === 0) return null;
-  if(!factoryBags[topic] || factoryBags[topic].length === 0){
-    factoryBags[topic] = shuffleArray(all.slice());
-  }
-  return factoryBags[topic].pop();
-}
-
-/* Legacy — kept for mock paper compatibility */
-let numberFactoryBag = [];
-function refillNumberFactoryBag(){
-  numberFactoryBag = shuffleArray((TOPIC_MAP["Number"] || []).slice());
-}
-function pickNumberFactoryEvenly(){
-  if(numberFactoryBag.length === 0) refillNumberFactoryBag();
-  return numberFactoryBag.pop();
-}
-
-/* =========================
-   App wiring
-   ========================= */
-let currentQuestion = null;
-
-const topicSelect = document.getElementById("topicSelect");
-const newQuestionBtn = document.getElementById("newQuestionBtn");
-const mockPaperBtn = document.getElementById("mockPaperBtn");
-const showAllSolutionsBtn = document.getElementById("showAllSolutionsBtn");
-const showSolutionBtn = document.getElementById("showSolutionBtn");
-const hideSolutionBtn = document.getElementById("hideSolutionBtn");
-
-const questionTextEl = document.getElementById("questionText");
-const diagramBlockEl = document.getElementById("diagramBlock");
-const optionsListEl = document.getElementById("optionsList");
-
-const solutionBlockEl = document.getElementById("solutionBlock");
-const solutionTextEl = document.getElementById("solutionText");
-const mockPaperContainerEl = document.getElementById("mockPaperContainer");
-
-const topicTagEl = document.getElementById("topicTag");
-const skillTagEl = document.getElementById("skillTag");
-const difficultyTextEl = document.getElementById("difficultyText");
-const idTagEl = document.getElementById("idTag");
-
-function clearMeta(){
-  topicTagEl.textContent = "";
-  skillTagEl.textContent = "";
-  difficultyTextEl.textContent = "";
-  idTagEl.textContent = "";
-}
-
-function generateQuestion(){
-  mockPaperContainerEl.style.display = "none";
-  mockPaperContainerEl.innerHTML = "";
-  showAllSolutionsBtn.style.display = "none";
-  questionTextEl.style.display = "block";
-  optionsListEl.style.display = "block";
-  showSolutionBtn.style.display = "inline-block";
-  hideSolutionBtn.style.display = "inline-block";
-
-  const chosenTopic = topicSelect.value;
-
-  let topicToUse = chosenTopic;
-  if(chosenTopic === "all"){
-    topicToUse = pickTopicEvenly();
+  if(type === "A"){
+    // Two-operation: a OP1 b OP2 c — mix of × or ÷ with + or −
+    const variant = choice(["mul_then_add","mul_then_sub","add_then_mul","sub_then_mul","div_then_add","div_then_sub"]);
+    if(variant === "mul_then_add"){
+      const b = randInt(2,9), c = randInt(2,9), a = randInt(1,9);
+      const correct = a + b * c;
+      const wrong1 = (a + b) * c;           // bracket mistake
+      const wrong2 = a + b + c;             // ignores ×
+      const wrong3 = a * b + c;             // swaps which × applies
+      const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+      if(!mcq) return makeBIDMASFoundation();
+      return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+        paper:"paper1",
+        question:`Work out  ${a} + ${b} × ${c}`,
+        options:mcq.options, correctIndex:mcq.correctIndex,
+        solution:`Multiplication first: ${b} × ${c} = ${b*c}\nThen add: ${a} + ${b*c} = ${correct}` };
+    }
+    if(variant === "mul_then_sub"){
+      const b = randInt(2,9), c = randInt(2,9), a = randInt(b*c+1, b*c+9);
+      const correct = a - b * c;
+      if(correct <= 0) return makeBIDMASFoundation();
+      const wrong1 = (a - b) * c;
+      const wrong2 = a - b - c;
+      const wrong3 = a - b + c;
+      const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+      if(!mcq) return makeBIDMASFoundation();
+      return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+        paper:"paper1",
+        question:`Work out  ${a} − ${b} × ${c}`,
+        options:mcq.options, correctIndex:mcq.correctIndex,
+        solution:`Multiplication first: ${b} × ${c} = ${b*c}\nThen subtract: ${a} − ${b*c} = ${correct}` };
+    }
+    if(variant === "add_then_mul"){
+      const a = randInt(1,7), b = randInt(1,7), c = randInt(2,6);
+      const correct = (a + b) * c;
+      const wrong1 = a + b * c;
+      const wrong2 = a * c + b;
+      const wrong3 = a + b + c;
+      const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+      if(!mcq) return makeBIDMASFoundation();
+      return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+        paper:"paper1",
+        question:`Work out  (${a} + ${b}) × ${c}`,
+        options:mcq.options, correctIndex:mcq.correctIndex,
+        solution:`Brackets first: ${a} + ${b} = ${a+b}\nThen multiply: ${a+b} × ${c} = ${correct}` };
+    }
+    if(variant === "sub_then_mul"){
+      const b = randInt(1,5), a = randInt(b+2,9), c = randInt(2,7);
+      const correct = (a - b) * c;
+      const wrong1 = a - b * c;
+      const wrong2 = a * c - b;
+      const wrong3 = (a + b) * c;
+      const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+      if(!mcq) return makeBIDMASFoundation();
+      return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+        paper:"paper1",
+        question:`Work out  (${a} − ${b}) × ${c}`,
+        options:mcq.options, correctIndex:mcq.correctIndex,
+        solution:`Brackets first: ${a} − ${b} = ${a-b}\nThen multiply: ${a-b} × ${c} = ${correct}` };
+    }
+    if(variant === "div_then_add"){
+      const c = choice([2,3,4,5,6]); const b = c * randInt(2,6); const a = randInt(1,9);
+      const correct = a + b / c;
+      const wrong1 = (a + b) / c;
+      const wrong2 = a + b - c;
+      const wrong3 = a * b / c;
+      const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+      if(!mcq) return makeBIDMASFoundation();
+      return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+        paper:"paper1",
+        question:`Work out  ${a} + ${b} ÷ ${c}`,
+        options:mcq.options, correctIndex:mcq.correctIndex,
+        solution:`Division first: ${b} ÷ ${c} = ${b/c}\nThen add: ${a} + ${b/c} = ${correct}` };
+    }
+    // div_then_sub
+    const c = choice([2,3,4,5]); const b = c * randInt(3,7); const a = randInt(b/c+1,20);
+    const correct = a - b / c;
+    if(correct <= 0) return makeBIDMASFoundation();
+    const wrong1 = (a - b) / c;
+    const wrong2 = a - b + c;
+    const wrong3 = a + b / c;
+    const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+    if(!mcq) return makeBIDMASFoundation();
+    return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+      paper:"paper1",
+      question:`Work out  ${a} − ${b} ÷ ${c}`,
+      options:mcq.options, correctIndex:mcq.correctIndex,
+      solution:`Division first: ${b} ÷ ${c} = ${b/c}\nThen subtract: ${a} − ${b/c} = ${correct}` };
   }
 
-  const factories = TOPIC_MAP[topicToUse] || [];
-  if(factories.length === 0){
-    questionTextEl.innerHTML = "No questions available yet for this topic.";
-    diagramBlockEl.innerHTML = "";
-    diagramBlockEl.style.display = "none";
-    optionsListEl.innerHTML = "";
-    solutionBlockEl.style.display = "none";
-    hideSolutionBtn.disabled = true;
-    clearMeta();
-    currentQuestion = null;
-    return;
+  if(type === "B"){
+    // Brackets with squaring: (a + b)² or (a − b)²
+    const sign = choice(["+","−"]);
+    const a = randInt(2,8), b = randInt(1,5);
+    if(sign === "−" && b >= a) return makeBIDMASFoundation();
+    const inner = sign === "+" ? a + b : a - b;
+    const correct = inner * inner;
+    const wrong1 = a * a + b * b;           // forget to expand properly
+    const wrong2 = inner * 2;               // double instead of square
+    const wrong3 = sign === "+" ? a * a + 2 * a * b + b * b + 1 : Math.abs(a * a - b * b); // common slip
+    const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+    if(!mcq) return makeBIDMASFoundation();
+    return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+      paper:"paper1",
+      question:`Work out  (${a} ${sign} ${b})²`,
+      options:mcq.options, correctIndex:mcq.correctIndex,
+      solution:`Brackets first: ${a} ${sign} ${b} = ${inner}\nThen square: ${inner}² = ${inner} × ${inner} = ${correct}` };
   }
 
-  const factory = pickFactoryEvenly(topicToUse);
-  if(!factory){ return; }
-  currentQuestion = factory();
+  // Type C — indices (a + b²  or  a × b²)
+  const variant2 = choice(["add_sq","mul_sq","add_cube"]);
+  if(variant2 === "add_sq"){
+    const b = randInt(2,7), a = randInt(1,9);
+    const correct = a + b * b;
+    const wrong1 = (a + b) * (a + b);
+    const wrong2 = a + b * 2;
+    const wrong3 = a * b * b;
+    const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+    if(!mcq) return makeBIDMASFoundation();
+    return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+      paper:"paper1",
+      question:`Work out  ${a} + ${b}²`,
+      options:mcq.options, correctIndex:mcq.correctIndex,
+      solution:`Indices first: ${b}² = ${b*b}\nThen add: ${a} + ${b*b} = ${correct}` };
+  }
+  if(variant2 === "mul_sq"){
+    const b = randInt(2,5), a = randInt(2,5);
+    const correct = a * b * b;
+    const wrong1 = (a * b) * (a * b);
+    const wrong2 = a * b * 2;
+    const wrong3 = a + b * b;
+    const mcq = buildMCQOptions(String(correct),[String(wrong1),String(wrong2),String(wrong3)]);
+    if(!mcq) return makeBIDMASFoundation();
+    return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+      paper:"paper1",
+      question:`Work out  ${a} × ${b}²`,
+      options:mcq.options, correctIndex:mcq.correctIndex,
+      solution:`Indices first: ${b}² = ${b*b}\nThen multiply: ${a} × ${b*b} = ${correct}` };
+  }
+  // add_cube
+  const b2 = randInt(2,4), a2 = randInt(1,8);
+  const correct2 = a2 + b2 * b2 * b2;
+  const wrong1b = (a2 + b2) ** 3;
+  const wrong2b = a2 + b2 * 3;
+  const wrong3b = a2 + b2 * b2;
+  const mcq2 = buildMCQOptions(String(correct2),[String(wrong1b),String(wrong2b),String(wrong3b)]);
+  if(!mcq2) return makeBIDMASFoundation();
+  return { id:makeID("BID"), topic:"Number", skill:"BIDMAS — order of operations", difficulty:"Foundation",
+    paper:"paper1",
+    question:`Work out  ${a2} + ${b2}³`,
+    options:mcq2.options, correctIndex:mcq2.correctIndex,
+    solution:`Indices first: ${b2}³ = ${b2} × ${b2} × ${b2} = ${b2**3}\nThen add: ${a2} + ${b2**3} = ${correct2}` };
+}
 
-  topicTagEl.textContent = currentQuestion.topic;
-  skillTagEl.textContent = currentQuestion.skill;
-  difficultyTextEl.textContent = currentQuestion.difficulty;
-  idTagEl.textContent = "ID: " + currentQuestion.id;
+/* Function Machine Foundation */
+function makeFunctionMachineFoundation(){
+  const type = choice(['output','input','output','input']); // slight bias to output
 
-  questionTextEl.innerHTML = renderMath(currentQuestion.question);
+  // Machine operations: [op1, op2] where op is {sym, fn, inv}
+  const multiplyOps = [2,3,4,5].map(n=>({ sym:`× ${n}`, fn:x=>x*n, inv:x=>x/n }));
+  const addOps      = [3,4,5,6,7,8,9,10].map(n=>({ sym:`+ ${n}`, fn:x=>x+n, inv:x=>x-n }));
+  const subOps      = [2,3,4,5,6].map(n=>({ sym:`− ${n}`, fn:x=>x-n, inv:x=>x+n }));
 
-  if(currentQuestion.diagram){
-    diagramBlockEl.innerHTML = currentQuestion.diagram;
-    diagramBlockEl.style.display = "block";
+  const variant = choice(['mul_add','mul_sub','add_mul','sub_mul']);
+  let op1, op2;
+  if(variant==='mul_add'){ op1=choice(multiplyOps); op2=choice(addOps); }
+  else if(variant==='mul_sub'){ op1=choice(multiplyOps); op2=choice(subOps); }
+  else if(variant==='add_mul'){ op1=choice(addOps); op2=choice(multiplyOps); }
+  else { op1=choice(subOps); op2=choice(multiplyOps); }
+
+  if(type==='output'){
+    const input = randInt(2,9);
+    const mid   = op1.fn(input);
+    const output = op2.fn(mid);
+    if(!Number.isInteger(output)||output<=0||output>100) return makeFunctionMachineFoundation();
+
+    const wrong1 = op2.fn(op1.fn(input+1));   // wrong input
+    const wrong2 = op1.fn(input) + op2.fn(0);  // add ops instead of chain
+    const wrong3 = output + choice([1,-1,2,-2,3,-3]);
+    const mcq = buildMCQOptions(String(output),[String(wrong1),String(wrong2),String(wrong3)]);
+    if(!mcq) return makeFunctionMachineFoundation();
+    return {
+      id: makeID("ALG"),
+      topic: "Algebra",
+      skill: "Function machines",
+      difficulty: "Foundation",
+      paper: "paper1",
+      question: `Here is a number machine:\n\nInput \u2192 [ ${op1.sym} ] \u2192 [ ${op2.sym} ] \u2192 Output\n\nFind the output when the input is ${input}.`,
+      options: mcq.options, correctIndex: mcq.correctIndex,
+      solution: `Step 1: ${input} ${op1.sym} = ${mid}\nStep 2: ${mid} ${op2.sym} = ${output}\n\nOutput = ${output}`
+    };
   } else {
-    diagramBlockEl.innerHTML = "";
-    diagramBlockEl.style.display = "none";
+    // Find input given output (inverse)
+    // Generate from a known input to guarantee integer output
+    const input = randInt(2,9);
+    const output = op2.fn(op1.fn(input));
+    if(!Number.isInteger(output)||output<=0||output>100) return makeFunctionMachineFoundation();
+
+    // Inverse: undo op2 then op1
+    const step1 = op2.inv(output);
+    const invInput = op1.inv(step1);
+    if(!Number.isInteger(invInput)||invInput!==input) return makeFunctionMachineFoundation();
+
+    const wrong1 = op1.inv(op2.inv(output+2));
+    const wrong2 = op2.fn(op1.fn(output)); // applied forward again
+    const wrong3 = input + choice([1,2,-1,3]);
+    const mcq = buildMCQOptions(String(input),[String(wrong1),String(wrong2),String(wrong3)]);
+    if(!mcq) return makeFunctionMachineFoundation();
+    return {
+      id: makeID("ALG"),
+      topic: "Algebra",
+      skill: "Function machines",
+      difficulty: "Foundation",
+      paper: "paper1",
+      question: `Here is a number machine:\n\nInput \u2192 [ ${op1.sym} ] \u2192 [ ${op2.sym} ] \u2192 Output\n\nFind the input when the output is ${output}.`,
+      options: mcq.options, correctIndex: mcq.correctIndex,
+      solution: `Work backwards (inverse operations):\nStep 1: ${output} ${op2.sym.replace('×','÷').replace('+','−').replace('−','+')} = ${step1}\nStep 2: ${step1} ${op1.sym.replace('×','÷').replace('+','−').replace('−','+')} = ${input}\n\nInput = ${input}`
+    };
+  }
+}
+
+const FACTORY_REGISTRY = [
+  { topic:"Number", name:"Reverse Percentage (Money)", fn:makeReversePercentMoney, prefix:"REV%M", inMap:true },
+  { topic:"Number", name:"Percentage Change", fn:makePercentChange, prefix:"PCHG", inMap:true },
+  { topic:"Number", name:"Ratio \u2014 Simplify", fn:makeRatioSimplify, prefix:"RATIO", inMap:true },
+  { topic:"Number", name:"Best Buy", fn:makeBestBuy, prefix:"BEST", inMap:true },
+  { topic:"Number", name:"Fraction \u2014 Add / Subtract", fn:makeFractionAddSub, prefix:"FRAC", inMap:true },
+  { topic:"Number", name:"Fraction of Amount", fn:makeFractionOfAmount, prefix:"FRAC", inMap:true },
+  { topic:"Number", name:"Standard Form \u2014 Convert", fn:makeStandardFormConvert, prefix:"SF", inMap:true },
+  { topic:"Number", name:"Standard Form \u2014 Multiply", fn:makeStandardFormMultiply, prefix:"SF\u00d7", inMap:true },
+  { topic:"Number", name:"Standard Form \u2014 Divide", fn:makeStandardFormDivide, prefix:"SF\u00f7", inMap:true },
+  { topic:"Number", name:"Bounds \u2014 Error Interval", fn:makeBoundsErrorInterval, prefix:"BND", inMap:true },
+  { topic:"Number", name:"Indices \u2014 Evaluate", fn:makeIndicesEvaluate, prefix:"IDX", inMap:true },
+  { topic:"Number", name:"Multi-step Percent + Fraction", fn:makeMultiStepPercentThenFraction, prefix:"MIX", inMap:true },
+  { topic:"Number", name:"Compound Percentage", fn:makeCompoundPercent, prefix:"COMP%", inMap:true },
+  { topic:"Number", name:"Advanced Reverse Percentage", fn:makeAdvancedReversePercent, prefix:"REV%A", inMap:true },
+  { topic:"Number", name:"Ratio \u2014 Share", fn:makeRatioShare, prefix:"RATIO", inMap:true },
+  { topic:"Number", name:"Direct Proportion", fn:makeDirectProportion, prefix:"DIRP", inMap:true },
+  { topic:"Number", name:"Fraction \u2014 Multiply", fn:makeFractionMultiply, prefix:"FR\u00d7", inMap:true },
+  { topic:"Number", name:"Speed Distance Time", fn:makeSpeedQuestion, prefix:"GEO", inMap:true },
+  { topic:"Number", name:"Density Mass Volume", fn:makeDensityQuestion, prefix:"GEO", inMap:true },
+  { topic:"Number", name:"Bounds \u2014 Area", fn:makeBoundsArea, prefix:"BND", inMap:false },
+  { topic:"Number", name:"Mixed Percent & Ratio", fn:makeMixedPercentRatio, prefix:"MIX", inMap:true },
+  { topic:"Number", name:"BIDMAS \u2014 Foundation", fn:makeBIDMASFoundation, prefix:"BID", inMap:true },
+  { topic:"Algebra", name:"Function Machine", fn:makeFunctionMachineFoundation, prefix:"FM", inMap:true },
+  { topic:"Number", name:"True / False \u2014 Percentages \u2605F", fn:makeTrueFalsePercent_F, prefix:"F", inMap:true },
+  { topic:"Number", name:"True / False \u2014 Conversion \u2605F", fn:makeTrueFalseConversion_F, prefix:"F", inMap:true },
+  { topic:"Algebra", name:"Expand Single Bracket", fn:makeExpandSingleBracketQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Expand Double Brackets", fn:makeExpandDoubleBracketQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Factorise \u2014 Common Factor", fn:makeFactoriseCommonFactorQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Factorise \u2014 Quadratic", fn:makeFactoriseQuadraticQuestion, prefix:"ALG", inMap:false },
+  { topic:"Algebra", name:"Simplify Expression", fn:makeSimplifyExpressionQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Equation \u2014 One Step", fn:makeEquationOneStepQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Equation \u2014 Two Step", fn:makeEquationTwoStepQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Equation \u2014 With Brackets", fn:makeEquationBracketsQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Equation \u2014 Unknown Both Sides", fn:makeEquationUnknownBothSidesQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Equation from Words", fn:makeEquationFromWordsQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Equation \u2014 Creating", fn:makeEquationCreatingQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Rearranging Formula", fn:makeRearrangingFormulaQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Algebraic Fraction \u2014 Simplify", fn:makeAlgebraicFractionSimplifyQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Algebraic Fraction \u2014 Multiply/Divide", fn:makeAlgebraicFractionMultiplyDivideQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Algebraic Fraction \u2014 Equation", fn:makeAlgebraicFractionEquationQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Inequality", fn:makeInequalityQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Inequality \u2014 Interpretation", fn:makeInequalityInterpretationQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Simultaneous \u2014 Elimination", fn:makeSimultaneousEliminationQuestion, prefix:"ALG", inMap:false },
+  { topic:"Algebra", name:"Sequence \u2014 Term to Term", fn:makeSequenceTermToTermQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Sequence \u2014 nth Term", fn:makeSequenceNthTermQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Sequence \u2014 Pattern", fn:makeSequencePatternQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Trial and Improvement", fn:makeTrialImprovementQuestion, prefix:"ALG", inMap:true },
+  { topic:"Algebra", name:"Thought Number \u2014 Multiply \u2605F", fn:makeThoughtNumberMultiply_F, prefix:"F", inMap:true },
+  { topic:"Algebra", name:"Thought Number \u2014 Divide \u2605F", fn:makeThoughtNumberDivide_F, prefix:"F", inMap:true },
+  { topic:"Algebra", name:"Thought Number \u2014 Two Step \u2605F", fn:makeThoughtNumberTwoStep_F, prefix:"F", inMap:true },
+  { topic:"Geometry & Measure", name:"Rectangle \u2014 Area", fn:makeRectangleAreaQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Rectangle \u2014 Perimeter", fn:makeRectanglePerimeterQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Triangle \u2014 Area", fn:makeTriangleAreaQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Parallelogram \u2014 Area", fn:makeParallelogramAreaQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Trapezium \u2014 Area", fn:makeTrapeziumAreaQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Circle \u2014 Circumference", fn:makeCircleCircumferenceQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Circle \u2014 Area", fn:makeCircleAreaQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Prism \u2014 Volume", fn:makePrismVolumeQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Cuboid \u2014 Volume", fn:makeCuboidVolumeQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Cylinder \u2014 Volume", fn:makeCylinderVolumeQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Scale Factor \u2014 Length", fn:makeScaleFactorLengthQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Scale Factor \u2014 Area", fn:makeScaleFactorAreaQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Angles on a Line", fn:makeAnglesOnLineQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Angles Around a Point", fn:makeAnglesAroundPointQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Triangle \u2014 Angles", fn:makeTriangleAngleQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Quadrilateral \u2014 Angles", fn:makeQuadrilateralAngleQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Polygon \u2014 Interior Angle", fn:makePolygonInteriorAngleQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Regular Polygon \u2014 Exterior", fn:makeRegularPolygonExteriorQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Pythagoras \u2014 Hypotenuse", fn:makePythagorasQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Pythagoras \u2014 Missing Leg", fn:makePythagorasMissingLegQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Trigonometry \u2014 SOH (sin)", fn:makeTrigSOHQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Trigonometry \u2014 CAH (cos)", fn:makeTrigCAHQuestion, prefix:"GEO", inMap:true },
+  { topic:"Geometry & Measure", name:"Trigonometry \u2014 TOA (tan)", fn:makeTrigTOAQuestion, prefix:"GEO", inMap:true },
+  { topic:"Statistics & Probability", name:"Mean \u2014 Integer Data", fn:makeMeanQuestionInteger, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Mean \u2014 Missing Value", fn:makeMissingMeanQuestion, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Median", fn:makeMedianQuestion, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Mode", fn:makeModeQuestion, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Range", fn:makeRangeQuestion, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Frequency Table \u2014 Mean", fn:makeFrequencyMeanQuestion, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Combined Stats & Conditions", fn:makeCombinedStatsConditionsQuestion, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Probability \u2014 Single Event", fn:makeProbabilitySingleEvent, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Probability \u2014 Complement", fn:makeProbabilityNotEvent, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Expected Frequency", fn:makeExpectedFrequency, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Probability \u2014 Fraction \u2605F", fn:makeProbabilityFraction, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Independent Probability", fn:makeIndependentProbability, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Mutually Exclusive Probability", fn:makeMutuallyExclusiveProbability, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Relative Frequency", fn:makeRelativeFrequency, prefix:"PROB", inMap:true },
+  { topic:"Statistics & Probability", name:"Pie Chart \u2014 Angle", fn:makePieChartAngle, prefix:"STAT", inMap:true },
+  { topic:"Statistics & Probability", name:"Scatter Graph \u2014 Correlation", fn:makeScatterCorrelation, prefix:"STAT", inMap:true },
+];
+
+/* =============================================
+   RENDER HELPERS
+   ============================================= */
+function renderMath(str) {
+  if(!str) return '';
+  let s = str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/\n/g,'<br>');
+  const SF = (n,d) => `<span class="frac"><span class="num">${n}</span><span class="den">${d}</span></span>`;
+  // Protect unit-rate slashes
+  const unitSlots = [];
+  s = s.replace(/(km\/h|m\/s|g\/cm[²³]?|cm\/s)/g, m => { unitSlots.push(m); return `\u0000U${unitSlots.length-1}\u0000`; });
+  // √(num/den)
+  s = s.replace(/√\(([^)]+)\/([^)]+)\)/g, (_,n,d) => `√${SF(n,d)}`);
+  // (expr)/denom
+  s = s.replace(/\(([^)]+)\)\/([A-Za-zπ√²³⁰¹⁴⁵⁶⁷⁸⁹\d][A-Za-zπ²³⁰¹⁴⁵⁶⁷⁸⁹√\d]*)(?=[\s),\-+<]|$)/g, (_,n,d) => SF(n,d));
+  // num/(expr)
+  s = s.replace(/(^|[=\s])([A-Za-zπ√²³⁰¹⁴⁵⁶⁷⁸⁹\d]+)\/\(([^)]+)\)(?=[\s),\-+]|$)/g, (_,pre,n,d) => `${pre}${SF(n,d)}`);
+  // Mixed numbers
+  s = s.replace(/(^|[\s(>])(-?\d+)\s+(\d+)\/(\d+)(?=[\s,.)!<]|$)/g, (_,pre,w,n,d) => {
+    if(parseInt(d)<2) return _;
+    return `${pre}<span class="mixed-frac">${w}${SF(n,d)}</span>`;
+  });
+  // Algebraic Np/Mp
+  s = s.replace(/(^|[\s(])(-?\d+)p\/(\d+)p(?=[\s,.)÷×<]|$)/g, (_,pre,n,d) => `${pre}${SF(n+'p',d+'p')}`);
+  // Algebraic Np/M
+  s = s.replace(/(^|[\s(])(-?\d+)p\/(\d+)(?=[\s,.)=÷×<]|$)/g, (_,pre,n,d) => { if(parseInt(d)<2) return _; return `${pre}${SF(n+'p',d)}`; });
+  // Formula fractions
+  s = s.replace(/(^|[=\s(])([A-Za-zπ√\d][A-Za-zπ²³⁰¹⁴⁵⁶⁷⁸⁹√\d]*)\/([A-Za-zπ√\d][A-Za-zπ²³⁰¹⁴⁵⁶⁷⁸⁹√\d]*)(?=[\s),\-+<]|$)/g, (_,pre,n,d) => `${pre}${SF(n,d)}`);
+  // Pure numeric
+  s = s.replace(/(^|[^a-zA-Z\d.£])(-?\d+)\/(\d+)(?=[^a-zA-Z\d]|$)/g, (_,pre,n,d) => { if(parseInt(d)<2) return _; return `${pre}${SF(n,d)}`; });
+  s = s.replace(/\u0000U(\d+)\u0000/g, (_,i) => unitSlots[parseInt(i)]);
+  return s;
+}
+
+/* =============================================
+   QUIZ ENGINE
+   ============================================= */
+const LABELS = ['A','B','C','D'];
+const MOCK_PATTERN = ["Number","Algebra","Geometry & Measure","Statistics & Probability","Number","Algebra","Geometry & Measure","Statistics & Probability","Number","Algebra"];
+let currentQ = null, answeredCurrent = false;
+let scoreCorrect = 0, scoreWrong = 0;
+
+function pickFactory(topic) {
+  let pool = FACTORY_REGISTRY.filter(f => f.inMap);
+  if(topic && topic !== 'all') pool = pool.filter(f => f.topic === topic);
+  if(!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function generateQ(topic) {
+  const entry = pickFactory(topic);
+  if(!entry) return null;
+  for(let i=0;i<20;i++){
+    try{ const q=entry.fn(); if(q&&q.question) return q; } catch(e){}
+  }
+  return null;
+}
+
+function showSinglePanel() {
+  document.getElementById('qCard').style.display = 'block';
+  document.getElementById('mockContainer').style.display = 'none';
+  document.getElementById('showAllSolBtn').style.display = 'none';
+  document.getElementById('printBtn').style.display = 'none';
+  document.getElementById('showSolBtn').style.display = 'inline-block';
+  document.getElementById('hideSolBtn').style.display = 'inline-block';
+}
+
+function generateQuestion() {
+  showSinglePanel();
+  const topic = document.getElementById('topicSelect').value;
+  const q = generateQ(topic === 'all' ? null : topic);
+  if(!q){ alert('No questions available for this topic.'); return; }
+  currentQ = q;
+  answeredCurrent = false;
+
+  // Meta
+  document.getElementById('topicPill').textContent = q.topic || '';
+  document.getElementById('skillPill').textContent = q.skill || '';
+  document.getElementById('diffPill').textContent = q.difficulty || '';
+  document.getElementById('idPill').textContent = 'ID: ' + (q.id || '');
+
+  // Question text
+  document.getElementById('qText').innerHTML = renderMath(q.question||'');
+
+  // Diagram
+  const diagEl = document.getElementById('qDiagram');
+  if(q.diagram){ diagEl.style.display='block'; diagEl.innerHTML=q.diagram; }
+  else diagEl.style.display='none';
+
+  // Options
+  const optsEl = document.getElementById('optionsList');
+  optsEl.innerHTML = '';
+  if(q.options && q.options.length){
+    q.options.forEach((opt,i)=>{
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      const letter = document.createElement('span');
+      letter.className = 'letter';
+      letter.textContent = LABELS[i]||String(i+1);
+      const txt = document.createElement('span');
+      txt.className = 'opt-text';
+      txt.innerHTML = renderMath(String(opt));
+      btn.appendChild(letter); btn.appendChild(txt);
+      btn.addEventListener('click', ()=>selectOption(i));
+      li.appendChild(btn);
+      optsEl.appendChild(li);
+    });
   }
 
-  optionsListEl.innerHTML = "";
-  const labels = ["A","B","C","D"];
-  currentQuestion.options.forEach((opt, idx) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<span class="option-label">${labels[idx]}.</span> ${renderMath(String(opt))}`;
-    optionsListEl.appendChild(li);
-  });
-
-  solutionTextEl.innerHTML = renderMath(currentQuestion.solution);
-  solutionBlockEl.style.display = "none";
-  hideSolutionBtn.disabled = true;
+  // Reset UI
+  const fb = document.getElementById('qFeedback');
+  fb.style.display='none'; fb.className='feedback';
+  document.getElementById('solutionBlock').style.display='none';
+  document.getElementById('solutionText').innerHTML='';
+  document.getElementById('showSolBtn').disabled=false;
+  document.getElementById('hideSolBtn').disabled=true;
+  document.getElementById('nextBtn').style.display='none';
 }
 
-/* =========================
-   MOCK PAPER ENGINE (SAFE / ISOLATED)
-   ========================= */
-function pickFactoryForMockTopic(topic){
-  const factories = TOPIC_MAP[topic] || [];
-  if(factories.length === 0) return null;
-  return choice(factories);
+function selectOption(idx){
+  if(answeredCurrent) return;
+  answeredCurrent = true;
+  const q = currentQ;
+  const btns = document.getElementById('optionsList').querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.setAttribute('disabled',''));
+
+  let correctIdx = -1;
+  if(typeof q.correctIndex==='number') correctIdx = q.correctIndex;
+  else if(q.answer && q.options) correctIdx = q.options.indexOf(q.answer);
+
+  const fb = document.getElementById('qFeedback');
+  if(idx === correctIdx){
+    btns[idx].classList.add('correct');
+    fb.className='feedback correct'; fb.textContent='\u2713 Correct!'; fb.style.display='block';
+    scoreCorrect++;
+  } else {
+    btns[idx].classList.add('wrong');
+    if(correctIdx>=0&&btns[correctIdx]) btns[correctIdx].classList.add('revealed');
+    fb.className='feedback wrong';
+    fb.textContent='\u2717 Incorrect \u2014 the correct answer was '+(LABELS[correctIdx]||'shown above')+'.';
+    fb.style.display='block';
+    scoreWrong++;
+  }
+  updateScore();
+  document.getElementById('nextBtn').style.display='inline-block';
 }
 
+function updateScore(){
+  const total = scoreCorrect + scoreWrong;
+  const pct = total > 0 ? Math.round(scoreCorrect*100/total) : 0;
+  document.getElementById('scoreBar').style.display='flex';
+  document.getElementById('sCorrect').textContent = scoreCorrect;
+  document.getElementById('sWrong').textContent = scoreWrong;
+  document.getElementById('sPct').textContent = pct+'%';
+  document.getElementById('sProgFill').style.width = pct+'%';
+  document.getElementById('sProgLbl').textContent = total+' answered';
+}
+
+function toggleSolution(show){
+  const block = document.getElementById('solutionBlock');
+  const q = currentQ;
+  if(show){
+    block.style.display='block';
+    if(q){
+      document.getElementById('solutionText').innerHTML = renderMath(q.solution||'No worked solution available.');
+    }
+    document.getElementById('showSolBtn').disabled=true;
+    document.getElementById('hideSolBtn').disabled=false;
+  } else {
+    block.style.display='none';
+    document.getElementById('showSolBtn').disabled=false;
+    document.getElementById('hideSolBtn').disabled=true;
+  }
+}
+
+/* ── Mock Paper ── */
 function generateMockPaper(){
-  const topicPattern = [
-    "Number",
-    "Algebra",
-    "Geometry & Measure",
-    "Statistics & Probability",
-    "Number",
-    "Algebra",
-    "Geometry & Measure",
-    "Statistics & Probability",
-    "Number",
-    "Algebra"
-  ];
+  document.getElementById('qCard').style.display='none';
+  document.getElementById('showSolBtn').style.display='none';
+  document.getElementById('hideSolBtn').style.display='none';
+  document.getElementById('showAllSolBtn').style.display='inline-block';
+  document.getElementById('printBtn').style.display='inline-block';
 
-  mockPaperContainerEl.innerHTML = "";
-  const labels = ["A","B","C","D"];
-  const paperQuestions = [];
+  const questions = [];
+  for(const topic of MOCK_PATTERN){
+    const q = generateQ(topic);
+    if(q) questions.push(q);
+  }
 
-  topicPattern.forEach((topic) => {
-    const factory = pickFactoryForMockTopic(topic);
-    if(factory){ paperQuestions.push(factory()); }
+  const mockEl = document.getElementById('mockContainer');
+  mockEl.style.display='block';
+  let html = '<div class="mock-title">&#128203; GCSE Foundation Tier Mock Paper</div>';
+  html += '<div class="mock-sub">'+questions.length+' questions drawn from the full Foundation Tier question bank.</div>';
+
+  questions.forEach((q,i)=>{
+    const diagHtml = q.diagram ? '<div style="text-align:center;margin:8px 0;">'+q.diagram+'</div>' : '';
+    const optHtml = (q.options&&q.options.length)
+      ? '<ul class="mock-options">'+q.options.map((o,j)=>'<li><strong>'+LABELS[j]+'.</strong> '+renderMath(String(o))+'</li>').join('')+'</ul>'
+      : '';
+    const solRaw = q.solution||'';
+    html += '<div class="mock-q-card">'+
+      '<div class="mock-q-meta">Q'+(i+1)+' &bull; '+q.topic+' &bull; '+(q.skill||'')+'</div>'+
+      '<div class="mock-q-text">'+renderMath(q.question||'')+'</div>'+
+      diagHtml + optHtml +
+      '<div class="mock-solution">&#x1F4DD; <strong>Worked Solution</strong><br>'+renderMath(solRaw)+'</div>'+
+      '</div>';
   });
 
-  let html = `<h2 style="font-size:1.25rem; color:#134b9b; margin-top:0;">GCSE Foundation Mock Paper</h2>`;
-  html += `<div class="subtitle">10 mixed questions generated from Number, Algebra, Geometry & Measure, and Statistics & Probability.</div>`;
-
-  paperQuestions.forEach((q, i) => {
-    const diagHtml = q.diagram ? ('<div style="text-align:center;margin:8px 0 4px;">' + q.diagram + '</div>') : '';
-    html += `
-      <div style="margin:16px 0 20px; padding:14px; border:1px solid #dde3f5; border-radius:6px; background:#ffffff;">
-        <div style="font-size:0.85rem; color:#134b9b; margin-bottom:6px;">${q.topic} • ${q.skill}</div>
-        <div style="font-size:1.02rem; margin-bottom:10px;"><strong>Q${i+1}.</strong> ${renderMath(String(q.question))}</div>
-        ${diagHtml}
-        <ul style="list-style:none; padding-left:0; margin:0 0 10px;">
-    `;
-    q.options.forEach((opt, idx) => {
-      html += `<li style="margin-bottom:4px;"><strong>${labels[idx]}.</strong> ${renderMath(String(opt))}</li>`;
-    });
-    html += `
-        </ul>
-        <div class="mock-solution" style="display:none; border-top:1px solid #dde3f5; padding-top:10px; margin-top:10px; line-height:1.7;">
-          <strong>Worked solution</strong><br>${renderMath(String(q.solution))}
-        </div>
-      </div>
-    `;
-  });
-
-  topicTagEl.textContent = "Mock Paper";
-  skillTagEl.textContent = "Mixed GCSE Practice";
-  difficultyTextEl.textContent = "Foundation";
-  idTagEl.textContent = "10 questions";
-
-  questionTextEl.style.display = "none";
-  optionsListEl.style.display = "none";
-  diagramBlockEl.innerHTML = "";
-  diagramBlockEl.style.display = "none";
-  solutionBlockEl.style.display = "none";
-  showSolutionBtn.style.display = "none";
-  hideSolutionBtn.style.display = "none";
-  hideSolutionBtn.disabled = true;
-
-  mockPaperContainerEl.innerHTML = html;
-  mockPaperContainerEl.style.display = "block";
-  showAllSolutionsBtn.style.display = "inline-block";
+  mockEl.innerHTML = html;
 }
 
-mockPaperBtn.addEventListener("click", generateMockPaper);
-
-showAllSolutionsBtn.addEventListener("click", () => {
-  document.querySelectorAll(".mock-solution").forEach(el => {
-    el.style.display = "block";
-  });
+/* ── Event listeners ── */
+document.getElementById('newQuestionBtn').addEventListener('click', generateQuestion);
+document.getElementById('mockPaperBtn').addEventListener('click', generateMockPaper);
+document.getElementById('showSolBtn').addEventListener('click', ()=>toggleSolution(true));
+document.getElementById('hideSolBtn').addEventListener('click', ()=>toggleSolution(false));
+document.getElementById('showAllSolBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.mock-solution').forEach(el=>el.style.display='block');
 });
+document.getElementById('printBtn').addEventListener('click', ()=>window.print());
 
-newQuestionBtn.addEventListener("click", generateQuestion);
-
-showSolutionBtn.addEventListener("click", () => {
-  if(!currentQuestion) return;
-  solutionBlockEl.style.display = "block";
-  hideSolutionBtn.disabled = false;
-});
-
-hideSolutionBtn.addEventListener("click", () => {
-  solutionBlockEl.style.display = "none";
-  hideSolutionBtn.disabled = true;
-});
-
-// init
-refillTopicBag();
-clearMeta();
 </script>
 </body>
 </html>
